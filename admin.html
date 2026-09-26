@@ -31,6 +31,7 @@
         <button class="nav-item" data-section="preregistros"><span>✦</span>Pre-registros <i id="pendingDot"></i></button>
         <button class="nav-item" data-section="integrantes"><span>♙</span>Integrantes</button>
         <button class="nav-item" data-section="actividades"><span>◇</span>Actividades</button>
+        <button class="nav-item" data-section="areas"><span>✧</span>Áreas</button>
         <button class="nav-item" data-section="casas"><span>◈</span>Casas</button>
       </nav>
       <div class="side-bottom">
@@ -63,6 +64,24 @@
       <section id="integrantes" hidden><div class="section-heading"><div><span class="eyebrow">COMUNIDAD NOVA</span><h2>Integrantes</h2><p>La comunidad activa, organizada y lista para crecer.</p></div></div><div class="toolbar"><div class="search-wrap">⌕<input id="memberSearch" class="search" placeholder="Buscar integrante..."></div><span id="memberCount" class="count"></span></div><div id="memberList" class="data-panel"></div></section>
 
       <section id="actividades" hidden><div class="section-heading"><div><span class="eyebrow">CALENDARIO NOVA</span><h2>Actividades</h2><p>Crea y organiza la ruta de formación, debate, MUN y liderazgo del club.</p></div><button id="addActivityBtn" class="gold-btn small-btn">+ Nueva actividad</button></div><div id="activityForm" class="activity-form" hidden><div><label>Nombre<input id="activityName" placeholder="Ej. Taller de oratoria"></label></div><div><label>Tipo<input id="activityType" placeholder="Ej. Capacitación"></label></div><div><label>Fecha<input id="activityDate" type="date"></label></div><div><label>Estado<select id="activityStatus"><option>Próxima</option><option>En curso</option><option>Finalizada</option></select></label></div><div class="full"><label>Descripción<textarea id="activityDescription" rows="3" placeholder="Describe brevemente la actividad..."></textarea></label></div><div class="form-actions"><button id="cancelActivity" class="ghost-btn">Cancelar</button><button id="saveActivity" class="gold-btn small-btn">Guardar actividad</button></div></div><div id="activityList" class="activity-grid"></div></section>
+
+      <section id="areas" hidden>
+        <div class="section-heading">
+          <div><span class="eyebrow">ESTRUCTURA NOVA</span><h2>Áreas</h2><p>Los espacios donde cada integrante puede desarrollar, crear y aportar al club.</p></div>
+        </div>
+        <div class="areas-intro">
+          <div class="areas-core"><span>✦</span><b>NOVA</b><small>UNA COMUNIDAD · MUCHAS FORMAS DE LIDERAR</small></div>
+          <div><span class="eyebrow">VISIÓN</span><h3>El liderazgo también se construye creando.</h3><p>Las áreas conectan formación, comunicación, producción, arte e innovación para que NOVA tenga espacio para distintos talentos.</p></div>
+        </div>
+        <div class="area-grid">
+          <article class="area-card area-featured"><div class="area-symbol">✧</div><span>CREACIÓN</span><h3>Artística</h3><p>Danza, teatro, representaciones, performances, decoración, escenografía y ambientación.</p><div class="area-tags"><i>Danza</i><i>Teatro</i><i>Escenografía</i></div></article>
+          <article class="area-card"><div class="area-symbol">◈</div><span>EXPRESIÓN</span><h3>Oratoria & Debate</h3><p>Argumentación, discursos, debate competitivo, MUN y comunicación pública.</p><div class="area-tags"><i>MUN</i><i>Debate</i><i>Oratoria</i></div></article>
+          <article class="area-card"><div class="area-symbol">◇</div><span>MEDIOS</span><h3>Comunicación</h3><p>Fotografía, video, cobertura, edición, guiones y contenido de NOVA.</p><div class="area-tags"><i>Foto</i><i>Video</i><i>Contenido</i></div></article>
+          <article class="area-card"><div class="area-symbol">⌁</div><span>PRODUCCIÓN</span><h3>Logística & Eventos</h3><p>Montaje, organización, sonido, iluminación, materiales y coordinación.</p><div class="area-tags"><i>Eventos</i><i>Montaje</i><i>Producción</i></div></article>
+          <article class="area-card"><div class="area-symbol">✦</div><span>REPRESENTACIÓN</span><h3>Protocolo & Relaciones</h3><p>Recepción, ceremonial, invitados, alianzas y representación institucional.</p><div class="area-tags"><i>Protocolo</i><i>Relaciones</i></div></article>
+          <article class="area-card"><div class="area-symbol">⚡</div><span>FUTURO</span><h3>Innovación & Proyectos</h3><p>Ideas, iniciativas, STEAM, emprendimiento y soluciones para la comunidad.</p><div class="area-tags"><i>STEAM</i><i>Ideas</i><i>Proyectos</i></div></article>
+        </div>
+      </section>
 
       <section id="casas" hidden><div class="section-heading"><div><span class="eyebrow">COMPETENCIA INTERNA</span><h2>Casas</h2><p>Administra los puntos directamente. Cada cambio se refleja al instante.</p></div><div class="live house-live"><i></i> PUNTAJE EN VIVO</div></div><div id="houseGrid" class="house-grid"></div></section>
     </div>
