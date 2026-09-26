@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NOVA · Web Oficial</title>
 <link rel="stylesheet" href="css/admin.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2'"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="aurora aurora-a"></div><div class="aurora aurora-b"></div><div class="stars"></div>
@@ -17,7 +17,7 @@
     <div class="login-line"></div>
     <label>Correo<input id="email" type="email" placeholder="tu correo"></label>
     <label>Contraseña<input id="password" type="password" placeholder="••••••••"></label>
-    <button type="button" id="loginBtn" class="gold-btn">Entrar al centro de mando <span>↗</span></button>
+    <button id="loginBtn" class="gold-btn">Entrar al centro de mando <span>↗</span></button>
     <p id="msg"></p>
     <small class="secure">ACCESO RESTRINGIDO · DIRECTIVA NOVA</small>
   </div>
@@ -93,37 +93,5 @@
     </div>
   </main>
 </div>
-<script>
-(function(){
-  const SUPABASE_URL='https://hogbjrbaeedlyglegjle.supabase.co';
-  const SUPABASE_KEY='sb_publishable_NWG23rPztabdaFhEyNtN5w_rrCeMTC5';
-  function start(){
-    const btn=document.getElementById('loginBtn'), email=document.getElementById('email'), password=document.getElementById('password'), msg=document.getElementById('msg');
-    if(!btn||!email||!password||!msg)return;
-    let client;
-    try{client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){msg.textContent='No se pudo cargar el sistema de acceso.';return}
-    btn.addEventListener('click',async function(e){
-      e.preventDefault(); e.stopPropagation();
-      if(btn.disabled)return;
-      const em=email.value.trim(), pw=password.value;
-      if(!em||!pw){msg.textContent='Escribe tu correo y contraseña.';email.focus();return}
-      btn.disabled=true;btn.classList.add('loading');msg.textContent='Verificando acceso...';
-      try{
-        const {data,error}=await client.auth.signInWithPassword({email:em,password:pw});
-        if(error)throw new Error('Correo o contraseña incorrectos.');
-        const {data:authorized}=await client.rpc('is_directiva');
-        if(authorized!==true){await client.auth.signOut();throw new Error('Este usuario no tiene autorización de Directiva.')}
-        document.getElementById('login').hidden=true;
-        document.getElementById('dashboard').hidden=false;
-        msg.textContent='';
-        window.dispatchEvent(new CustomEvent('nova-authenticated',{detail:{user:data.user}}));
-      }catch(err){console.error('NOVA access:',err);msg.textContent=err&&err.message?err.message:'No fue posible iniciar sesión. Comprueba tu conexión.'}
-      finally{btn.disabled=false;btn.classList.remove('loading')}
-    });
-    [email,password].forEach(input=>input.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()}));
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-})();
-</script>
 <script src="js/admin.js"></script>
 </body></html>
