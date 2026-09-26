@@ -1,1 +1,76 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVA · Web Oficial</title><link rel="stylesheet" href="css/admin.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="app"><h1>NOVA</h1><p>Web Oficial · Directiva</p><div id="login"><input id="email" type="email" placeholder="Correo"><input id="password" type="password" placeholder="Contraseña"><button id="loginBtn">Entrar</button><p id="msg"></p></div><main id="dashboard" hidden><nav><button data-section="inicio">Inicio</button><button data-section="preregistros">Pre-registros</button><button data-section="integrantes">Integrantes</button><button data-section="casas">Casas</button><button id="logout">Salir</button></nav><section id="inicio"><h2>Resumen general</h2><div id="stats"></div><div><h3>Evolución de NOVA</h3><svg id="chart" viewBox="0 0 900 300"></svg></div><div id="ranking"></div></section><section id="preregistros" hidden><h2>Pre-registros</h2><input id="preSearch" placeholder="Buscar"><div id="preList"></div></section><section id="integrantes" hidden><h2>Integrantes</h2><input id="memberSearch" placeholder="Buscar"><div id="memberList"></div></section><section id="casas" hidden><h2>Casas</h2><div id="houseGrid"></div></section></main></div><script src="js/admin.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NOVA · Web Oficial</title>
+<link rel="stylesheet" href="css/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="aurora aurora-a"></div><div class="aurora aurora-b"></div><div class="stars"></div>
+<div id="app">
+  <div id="login">
+    <div class="login-mark"><span>N</span></div>
+    <div class="eyebrow">NOVA LEADERSHIP CLUB</div>
+    <h1>Web Oficial</h1>
+    <p class="login-sub">Centro privado de mando · Directiva</p>
+    <div class="login-line"></div>
+    <label>Correo<input id="email" type="email" placeholder="tu correo"></label>
+    <label>Contraseña<input id="password" type="password" placeholder="••••••••"></label>
+    <button id="loginBtn" class="gold-btn">Entrar al centro de mando <span>↗</span></button>
+    <p id="msg"></p>
+    <small class="secure">ACCESO RESTRINGIDO · DIRECTIVA NOVA</small>
+  </div>
+
+  <main id="dashboard" hidden>
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-symbol">N</div><div><b>NOVA</b><span>WEB OFICIAL</span></div></div>
+      <div class="side-label">CENTRO DE MANDO</div>
+      <nav>
+        <button class="nav-item active" data-section="inicio"><span>⌂</span>Inicio</button>
+        <button class="nav-item" data-section="preregistros"><span>✦</span>Pre-registros <i id="pendingDot"></i></button>
+        <button class="nav-item" data-section="integrantes"><span>♙</span>Integrantes</button>
+        <button class="nav-item" data-section="actividades"><span>◇</span>Actividades</button>
+        <button class="nav-item" data-section="casas"><span>◈</span>Casas</button>
+      </nav>
+      <div class="side-bottom">
+        <div class="access"><span class="pulse"></span><div><b>Sesión segura</b><small>Directiva autorizada</small></div></div>
+        <button id="logout" class="logout">↪ Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <div><div class="eyebrow">NOVA / PANEL PRIVADO</div><h1 id="pageTitle">Bienvenida, Directiva</h1></div>
+        <div class="top-actions"><span class="live"><i></i> EN VIVO</span><div class="avatar">N</div></div>
+      </header>
+
+      <section id="inicio">
+        <div class="hero-strip">
+          <div><span class="eyebrow">VISIÓN GENERAL</span><h2>Todo NOVA, <em>en un solo lugar.</em></h2><p>Controla la comunidad, sigue el crecimiento y mueve las Casas desde este centro.</p></div>
+          <div class="hero-orbit"><div class="orbit orbit1"></div><div class="orbit orbit2"></div><div class="core">N</div></div>
+        </div>
+        <div id="stats" class="stats"></div>
+        <div class="dashboard-grid">
+          <div class="panel evolution"><div class="panel-head"><div><span class="eyebrow">ACTIVIDAD</span><h3>Evolución de NOVA</h3></div><span class="period">Últimos 14 días</span></div><svg id="chart" viewBox="0 0 900 310" preserveAspectRatio="none"></svg></div>
+          <div class="panel next"><div class="panel-head"><div><span class="eyebrow">AGENDA</span><h3>Próximamente</h3></div><span class="spark">✦</span></div><div id="nextActivities"></div></div>
+        </div>
+        <div class="panel ranking-panel"><div class="panel-head"><div><span class="eyebrow">LAS CINCO CASAS</span><h3>Ranking actual</h3></div><span class="gold-caption">PUNTOS EN VIVO</span></div><div id="ranking" class="ranking"></div></div>
+      </section>
+
+      <section id="preregistros" hidden><div class="section-heading"><div><span class="eyebrow">GESTIÓN</span><h2>Pre-registros</h2><p>Revisa y decide quién pasa a formar parte de NOVA.</p></div></div><div class="toolbar"><div class="search-wrap">⌕<input id="preSearch" class="search" placeholder="Buscar por nombre, correo, curso..."></div><span id="preCount" class="count"></span></div><div id="preList" class="data-panel"></div></section>
+
+      <section id="integrantes" hidden><div class="section-heading"><div><span class="eyebrow">COMUNIDAD NOVA</span><h2>Integrantes</h2><p>La comunidad activa, organizada y lista para crecer.</p></div></div><div class="toolbar"><div class="search-wrap">⌕<input id="memberSearch" class="search" placeholder="Buscar integrante..."></div><span id="memberCount" class="count"></span></div><div id="memberList" class="data-panel"></div></section>
+
+      <section id="actividades" hidden><div class="section-heading"><div><span class="eyebrow">CALENDARIO NOVA</span><h2>Actividades</h2><p>La ruta de formación, debate, MUN y liderazgo del club.</p></div></div><div class="activity-grid">
+        <article class="activity featured"><span class="activity-tag">SEPTIEMBRE</span><div class="activity-icon">✦</div><h3>Consolidación</h3><p>Registro, organización interna, plataforma y división de responsabilidades.</p><div class="activity-foot"><span>Organización</span><b>01 → 30</b></div></article>
+        <article class="activity"><span class="activity-tag blue">NOVIEMBRE</span><div class="activity-icon">◇</div><h3>Preparación MUN</h3><p>Capacitaciones y preparación para el Modelo de Naciones Unidas interno.</p><div class="activity-foot"><span>Formación</span><b>NOV</b></div></article>
+        <article class="activity"><span class="activity-tag gold">DICIEMBRE</span><div class="activity-icon">♜</div><h3>Debate + MUN</h3><p>Entrenamiento conjunto, MUN interno y preparación para el torneo TRD.</p><div class="activity-foot"><span>Competencia</span><b>DIC</b></div></article>
+      </div></section>
+
+      <section id="casas" hidden><div class="section-heading"><div><span class="eyebrow">COMPETENCIA INTERNA</span><h2>Casas</h2><p>Administra los puntos directamente. Cada cambio se refleja al instante.</p></div><div class="live house-live"><i></i> PUNTAJE EN VIVO</div></div><div id="houseGrid" class="house-grid"></div></section>
+    </div>
+  </main>
+</div>
+<script src="js/admin.js"></script>
+</body></html>
