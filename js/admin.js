@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded',()=>{
 const sb=supabase.createClient('https://hogbjrbaeedlyglegjle.supabase.co','sb_publishable_NWG23rPztabdaFhEyNtN5w_rrCeMTC5',{auth:{persistSession:true,autoRefreshToken:true}});
 let pre=[],members=[],houses=[],activities=[],movements=[];const $=id=>document.getElementById(id);
 const meta={Pegaso:['#e9e4d5','♢'],Cronos:['#4c91ff','◷'],Fénix:['#e0bd67','ϟ'],Argos:['#55c98b','◉'],Olimpo:['#ef646e','△']};
@@ -30,3 +31,4 @@ document.querySelectorAll('.nav-item[data-section]').forEach(b=>b.onclick=()=>{d
 $('preSearch').oninput=renderPre;$('memberSearch').oninput=renderMembers;
 $('addActivityBtn').onclick=()=>{$('activityForm').hidden=!$('activityForm').hidden};
 $('cancelActivity').onclick=()=>{resetActivityForm();$('activityForm').hidden=true};$('saveActivity').onclick=async()=>{const nombre=$('activityName').value.trim(),tipo=$('activityType').value.trim()||'Actividad',fecha=$('activityDate').value||null,estado=$('activityStatus').value,descripcion=$('activityDescription').value.trim()||null;if(!nombre)return showToast('Escribe el nombre de la actividad.');let error;if(editingActivityId){({error}=await sb.from('actividades').update({nombre,tipo,fecha,estado,descripcion}).eq('id',editingActivityId));if(error)return showToast(error.message);resetActivityForm();$('activityForm').hidden=true;await load();showToast('Actividad actualizada. ✦')}else{const{data:{user}}=await sb.auth.getUser();({error}=await sb.from('actividades').insert({nombre,tipo,fecha,estado,descripcion,creador:user?.id||null}));if(error)return showToast(error.message);resetActivityForm();$('activityForm').hidden=true;await load();showToast('Actividad creada. ✦')}};
+});
