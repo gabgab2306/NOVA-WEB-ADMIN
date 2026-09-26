@@ -17,7 +17,7 @@
     <div class="login-line"></div>
     <label>Correo<input id="email" type="email" placeholder="tu correo"></label>
     <label>Contraseña<input id="password" type="password" placeholder="••••••••"></label>
-    <button id="loginBtn" class="gold-btn">Entrar al centro de mando <span>↗</span></button>
+    <button type="button" id="loginBtn" class="gold-btn">Entrar al centro de mando <span>↗</span></button>
     <p id="msg"></p>
     <small class="secure">ACCESO RESTRINGIDO · DIRECTIVA NOVA</small>
   </div>
@@ -94,4 +94,34 @@
   </main>
 </div>
 <script src="js/admin.js"></script>
+<script>
+(function(){
+  function boot(){
+    const btn=document.getElementById('loginBtn'),email=document.getElementById('email'),password=document.getElementById('password'),msg=document.getElementById('msg');
+    if(!btn||!email||!password||!msg)return;
+    const client=window.supabase&&window.supabase.createClient('https://hogbjrbaeedlyglegjle.supabase.co','sb_publishable_NWG23rPztabdaFhEyNtN5w_rrCeMTC5',{auth:{persistSession:true,autoRefreshToken:true}});
+    if(!client){msg.textContent='No se pudo cargar el sistema de acceso.';return}
+    btn.onclick=async function(e){
+      e.preventDefault();
+      if(btn.disabled)return;
+      const em=email.value.trim(),pw=password.value;
+      if(!em||!pw){msg.textContent='Escribe tu correo y contraseña.';return}
+      btn.disabled=true;msg.textContent='Verificando acceso...';
+      try{
+        const res=await client.auth.signInWithPassword({email:em,password:pw});
+        if(res.error)throw new Error('Correo o contraseña incorrectos.');
+        const auth=await client.rpc('is_directiva');
+        if(auth.error||auth.data!==true){await client.auth.signOut();throw new Error('Este usuario no tiene autorización de Directiva.');}
+        document.getElementById('login').hidden=true;
+        document.getElementById('dashboard').hidden=false;
+        msg.textContent='';
+        if(typeof load==='function')await load();
+      }catch(err){msg.textContent=err.message||'No fue posible iniciar sesión. Comprueba tu conexión.';}
+      finally{btn.disabled=false;}
+    };
+    [email,password].forEach(x=>x.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()}));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body></html>
