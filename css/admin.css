@@ -175,3 +175,62 @@
   .panel-head>div{min-width:0}
   .panel-head .period{white-space:nowrap}
 }
+
+/* NOVA · Barra móvil horizontal limpia */
+@media (max-width:760px){
+  #dashboard{padding-bottom:76px!important}
+  .sidebar{
+    height:70px!important;
+    padding:4px 6px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-top:1px solid rgba(65,150,220,.32)!important;
+    background:rgba(3,7,15,.96)!important;
+    box-shadow:0 -10px 35px rgba(0,0,0,.55)!important;
+  }
+  .sidebar nav{
+    width:100%!important;
+    height:62px!important;
+    display:flex!important;
+    align-items:stretch!important;
+    gap:2px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:0!important;
+    scrollbar-width:none!important;
+  }
+  .sidebar nav::-webkit-scrollbar{display:none!important}
+  .nav-item{
+    flex:1 0 76px!important;
+    min-width:76px!important;
+    height:62px!important;
+    padding:6px 4px!important;
+    border:0!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:3px!important;
+    font-size:8px!important;
+    color:#71839e!important;
+  }
+  .nav-item span{
+    width:auto!important;
+    font-size:17px!important;
+    line-height:19px!important;
+  }
+  .nav-item.active{
+    background:linear-gradient(180deg,rgba(15,54,88,.8),rgba(7,17,29,.7))!important;
+    border:1px solid rgba(50,151,226,.24)!important;
+    box-shadow:inset 0 -2px #35a8ff,0 0 18px rgba(20,125,210,.14)!important;
+    color:#fff!important;
+  }
+  .nav-item i{top:7px!important;right:18px!important}
+  .content{padding-bottom:16px!important}
+}
+@media (max-width:430px){
+  .nav-item{flex-basis:72px!important;min-width:72px!important}
+}
