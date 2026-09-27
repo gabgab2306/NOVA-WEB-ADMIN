@@ -13,7 +13,7 @@ function render(){
  $('list').innerHTML=data.slice((page-1)*size,page*size).map(x=>`<div class="list-row">
  <div><b>${esc(x.nombre_completo)}</b><small>${esc(x.email)}</small></div>
  <div>${esc(x.username||'Sin usuario')}</div><div>${esc(x.curso)} · ${esc(x.seccion)}</div>
- <div class="member-actions"><select class="member-house" onchange="assign('${x.id}',this.value)"><option value="">Sin casa</option>${houses.map(h=>`<option value="${h.id}" ${h.id===x.casa_id?'selected':''}>${esc(h.nombre)}</option>`).join('')}</select><button class="action" onclick="editMember('${x.id}')">Editar ficha</button></div></div>`).join('')||'<div class="empty">No hay integrantes.</div>';
+ <div class="member-actions"><button class="action feedback-action" onclick="feedbackMember('${x.id}')">Agregar feedback</button><select class="member-house" onchange="assign('${x.id}',this.value)"><option value="">Sin casa</option>${houses.map(h=>`<option value="${h.id}" ${h.id===x.casa_id?'selected':''}>${esc(h.nombre)}</option>`).join('')}</select><button class="action" onclick="editMember('${x.id}')">Editar ficha</button></div></div>`).join('')||'<div class="empty">No hay integrantes.</div>';
  const pages=Math.max(1,Math.ceil(data.length/size));$('pager').innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i+1===page?'active':''}" onclick="go(${i+1})">${i+1}</button>`).join('');
 }
 window.go=n=>{page=n;render()};
@@ -44,7 +44,7 @@ window.editMember=async id=>{
  <label class="full">Detalle de experiencia<textarea id="eDetalle" rows="2">${esc(base.detalle_experiencia||'')}</textarea></label>
  <label class="full">Motivación<textarea id="eMot" rows="3">${esc(base.motivacion||'')}</textarea></label>
  </div></div>
- <div class="editor-section"><span class="eyebrow">03 · ÁREAS ASIGNADAS</span><div class="check-grid">${['Artística','MUN / ONU','Debate','Oratoria','Staff'].map(a=>`<label class="check"><input type="checkbox" name="area" value="${a}" ${areas.some(x=>x.area===a)?'checked':''}> ${a}</label>`).join('')}</div></div>
+ <div class="editor-section"><span class="eyebrow">03 · ÁREAS ASIGNADAS</span><div class="area-editor">${['Artística','MUN / ONU','Debate','Oratoria','Staff'].map(a=>{const row=areas.find(x=>x.area===a);return '<div class="area-row"><label class="check"><input type="checkbox" name="area" value="'+a+'" '+(row?'checked':'')+'> '+a+'</label><input class="area-detail" data-area="'+a+'" value="'+esc(row?.detalle||'')+'" placeholder="Detalle / función en esta área"></div>'}).join('')}</div></div></div>
  <div class="editor-section"><span class="eyebrow">04 · MUN / ONU</span><div class="editor-grid">
  <label>País<input id="ePais" value="${esc(mun?.pais||'')}"></label><label>Comisión<input id="eComision" value="${esc(mun?.comision||'')}"></label><label class="full">Delegación<input id="eDelegacion" value="${esc(mun?.delegacion||'')}"></label>
  </div></div>
@@ -63,7 +63,7 @@ window.editMember=async id=>{
    const{error}=await sb.from('integrantes').update(patch).eq('id',id);if(error)return toast(error.message);
    const a=selectedAreas();
    let op=await sb.from('integrante_areas').delete().eq('integrante_id',id);if(op.error)return toast(op.error.message);
-   if(a.length){op=await sb.from('integrante_areas').insert(a.map(area=>({integrante_id:id,area,detalle:null})));if(op.error)return toast(op.error.message)}
+   if(a.length){op=await sb.from('integrante_areas').insert(a.map(area=>({integrante_id:id,area,detalle:document.querySelector('.area-detail[data-area="'+CSS.escape(area)+'"]')?.value.trim()||null})));if(op.error)return toast(op.error.message)}
    const munPayload={pais:inputValue('ePais'),comision:inputValue('eComision'),delegacion:inputValue('eDelegacion')};
    op=await saveOne('mun_asignaciones',id,munPayload);if(op.error)return toast(op.error.message);
    const debatePayload={nombre_tripleta:inputValue('eTripleta'),companeros:inputValue('eCompaneros')?[inputValue('eCompaneros')].join(',').split(',').map(x=>x.trim()).filter(Boolean):[]};
@@ -82,3 +82,28 @@ async function saveOne(table,id,payload){
  return await sb.from(table).insert({integrante_id:id,...clean});
 }
 window.closeModal=()=>{$('modal').hidden=true};
+
+window.feedbackMember=async id=>{
+ const base=members.find(x=>x.id===id);if(!base)return;
+ const {data:activities,error}=await sb.from('actividades').select('*').order('fecha',{ascending:false});
+ if(error)return toast(error.message);
+ const list=activities||[];
+ const {data:evaluations,error:evError}=await sb.from('evaluaciones').select('*').eq('integrante_id',id);
+ if(evError)return toast(evError.message);
+ $('modal').innerHTML='<div class="editor feedback-editor"><div class="editor-head"><div><span class="eyebrow">RETROALIMENTACIÓN DEL INTEGRANTE</span><h2>'+esc(base.nombre_completo)+'</h2></div><button class="close" onclick="closeModal()">×</button></div><form id="feedbackForm"><div class="editor-section"><span class="eyebrow">ACTIVIDAD</span><div class="editor-grid"><label class="full">Seleccionar actividad<select id="feedbackActivity"><option value="">Elige una actividad</option>'+list.map(a=>'<option value="'+a.id+'">'+esc(a.nombre)+' · '+esc(a.estado||'')+'</option>').join('')+'</select></label></div></div><div class="editor-section"><span class="eyebrow">FEEDBACK</span><div class="editor-grid"><label class="full">Retroalimentación<textarea id="feedbackText" rows="7" placeholder="Escribe aquí la retroalimentación para este integrante..."></textarea></label></div></div><div class="actions"><button type="button" class="ghost" onclick="closeModal()">Cancelar</button><button class="primary compact">Guardar feedback</button></div></form></div>';
+ $('modal').hidden=false;
+ const actSel=$('feedbackActivity'),txt=$('feedbackText');
+ actSel.onchange=()=>{const found=(evaluations||[]).find(e=>e.actividad_id===actSel.value);txt.value=found?.feedback||''};
+ $('feedbackForm').onsubmit=async e=>{
+  e.preventDefault();
+  const actividad_id=actSel.value,feedback=txt.value.trim();
+  if(!actividad_id)return toast('Selecciona una actividad.');
+  if(!feedback)return toast('Escribe el feedback.');
+  const {data:{user}}=await sb.auth.getUser();
+  let op=await sb.from('evaluaciones').delete().eq('integrante_id',id).eq('actividad_id',actividad_id);
+  if(op.error)return toast(op.error.message);
+  op=await sb.from('evaluaciones').insert({integrante_id:id,actividad_id,feedback,evaluador:user?.id||null,criterios:[],total:null,maximo:null});
+  if(op.error)return toast(op.error.message);
+  closeModal();toast('Feedback guardado. ✦');
+ };
+};
