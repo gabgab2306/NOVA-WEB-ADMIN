@@ -93,6 +93,34 @@
     </div>
   </main>
 </div>
+<div id="memberModal" class="member-modal" hidden>
+  <div class="member-modal-backdrop" data-close-member></div>
+  <div class="member-editor">
+    <div class="member-editor-head"><div><span class="eyebrow">FICHA DEL INTEGRANTE</span><h2 id="editorTitle">Editar integrante</h2></div><button class="modal-close" data-close-member>×</button></div>
+    <form id="memberEditorForm">
+      <input id="editMemberId" type="hidden">
+      <div class="editor-grid">
+        <label>Nombre completo<input id="editNombre" required></label>
+        <label>Username<input id="editUsername" required></label>
+        <label>Curso<input id="editCurso" required></label>
+        <label>Sección<input id="editSeccion" required></label>
+        <label>Teléfono<input id="editTelefono" required></label>
+        <label>Correo<input id="editEmail" type="email" required></label>
+        <label>Intereses <small>separados por coma</small><input id="editIntereses"></label>
+        <label>Experiencia previa<select id="editExperiencia"><option value="false">No</option><option value="true">Sí</option></select></label>
+        <label class="full">Motivación<textarea id="editMotivacion" rows="3"></textarea></label>
+        <label class="full">Detalle de experiencia<textarea id="editDetalle" rows="3"></textarea></label>
+        <label>Casa<select id="editCasa"></select></label>
+        <label>Estado<select id="editActivo"><option value="true">Activo</option><option value="false">Inactivo</option></select></label>
+      </div>
+      <div class="editor-section"><span class="eyebrow">ÁREAS</span><div id="editAreas" class="check-grid"></div></div>
+      <div class="editor-section"><span class="eyebrow">MUN / ONU</span><div class="editor-grid"><label>País<input id="editMunPais"></label><label>Comisión<input id="editMunComision"></label><label class="full">Delegación<input id="editMunDelegacion"></label></div></div>
+      <div class="editor-section"><span class="eyebrow">DEBATE</span><div class="editor-grid"><label>Nombre de tripleta<input id="editDebateNombre"></label><label class="full">Compañeros <small>separados por coma</small><input id="editDebateCompaneros"></label></div></div>
+      <div class="editor-section"><span class="eyebrow">STAFF</span><div class="editor-grid"><label>Rol<input id="editStaffRol"></label><label>Área de staff<input id="editStaffArea"></label></div></div>
+      <div class="form-actions"><button type="button" class="ghost-btn" data-close-member>Cancelar</button><button type="submit" class="gold-btn small-btn">Guardar ficha</button></div>
+    </form>
+  </div>
+</div>
 <script src="js/admin.js"></script>
 <script>
 (function(){
