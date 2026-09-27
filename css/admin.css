@@ -9,3 +9,13 @@
 
 .area-editor{display:grid;gap:10px}.area-row{display:grid;grid-template-columns:minmax(130px,180px) 1fr;gap:10px;align-items:center}.area-row .area-detail{width:100%}.feedback-editor{max-width:720px}.feedback-editor .editor-section{margin-bottom:14px}
 @media(max-width:700px){.area-row{grid-template-columns:1fr}.feedback-editor{width:calc(100vw - 24px);max-height:92vh;overflow:auto}.feedback-action{order:0}}
+
+/* Integrantes: tarjetas cuadradas organizadas */
+.list-panel{overflow-y:auto!important;overflow-x:hidden!important;padding:16px;scrollbar-width:none;-ms-overflow-style:none}
+.list-panel::-webkit-scrollbar{display:none}
+.member-grid{display:grid;grid-template-columns:repeat(3,minmax(230px,1fr));gap:14px}
+.member-card{min-height:245px;padding:16px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(155deg,#0d192b,#07101b);display:flex;flex-direction:column;justify-content:space-between;gap:12px;overflow:hidden;transition:.2s border-color,.2s transform}
+.member-card:hover{border-color:#3b7eaf66;transform:translateY(-2px)}
+.member-card-top{display:flex;align-items:center;gap:11px;min-width:0}.member-avatar{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#123653,#8a692c);color:#fff;font:600 13px Cinzel}.member-identity{min-width:0}.member-identity b{display:block;font:600 14px Cinzel;line-height:1.25;overflow-wrap:anywhere}.member-identity small{display:block;color:#647690;font-size:8px;margin-top:4px;overflow-wrap:anywhere}.member-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px}.member-meta span,.member-house-box{padding:9px;border:1px solid #17283e;border-radius:10px;background:#07111d;min-width:0}.member-meta small,.member-house-box>small{display:block;color:#63758f;font-size:7px;letter-spacing:1.2px}.member-meta b{display:block;font-size:9px;margin-top:4px;overflow-wrap:anywhere}.member-status.active{color:var(--green)}.member-status.inactive{color:var(--red)}.member-house-box{display:flex;align-items:center;justify-content:space-between;gap:8px}.member-house-box .member-house{flex:1;min-width:0;max-width:none}.member-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.member-actions .action{width:100%;min-height:34px}.feedback-action{border-color:#d0ad5a55;color:#e5ca79}
+@media(max-width:1050px){.member-grid{grid-template-columns:repeat(2,minmax(210px,1fr))}}
+@media(max-width:600px){.list-panel{padding:10px}.member-grid{grid-template-columns:1fr}.member-card{min-height:230px}.member-actions{grid-template-columns:1fr 1fr}.member-meta{grid-template-columns:1fr 1fr}}
