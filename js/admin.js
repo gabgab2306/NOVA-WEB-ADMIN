@@ -1,4 +1,4 @@
-const sb=supabase.createClient('https://hogbjrbaeedlyglegjle.supabase.co','sb_publishable_NWG23rPztabdaFhEyNtN5w_rrCeMTC5',{auth:{persistSession:true,autoRefreshToken:true}});
+const sb=supabase.createClient('https://hogbjrbaeedlyglegjle.supabase.co','sb_publishable_NWG23rPztabdaFhEyNtN5w_rrCeMTC5',{auth:{persistSession:false,autoRefreshToken:false}});
 let pre=[],members=[],houses=[],activities=[],movements=[];const $=id=>document.getElementById(id);
 const meta={Pegaso:['#e9e4d5','♢','🪽'],Cronos:['#4c91ff','◷','⏳'],Fénix:['#e0bd67','ϟ','🔥'],Argos:['#55c98b','◉','👁️'],Olimpo:['#ef646e','△','⚡']};
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
