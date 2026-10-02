@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded',async()=>{
+ await new Promise(resolve=>{if(document.querySelector('#shell .sidebar'))resolve(true);else document.addEventListener('nova-admin-ready',()=>resolve(true),{once:true})});
  const $=id=>document.getElementById(id);
  const dateKey=value=>{if(!value)return'';const d=new Date(value);if(Number.isNaN(d.getTime()))return'';return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
  const displayDate=value=>{if(!value)return'Fecha pendiente';const d=new Date(value);return Number.isNaN(d.getTime())?String(value):d.toLocaleDateString('es-DO',{day:'2-digit',month:'short'})};
