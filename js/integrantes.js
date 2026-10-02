@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded',async()=>{
 });
 function render(){
  const q=$('search').value.toLowerCase(),hf=$('houseFilter').value;
- const data=members.filter(x=>(!hf||x.casa_id===hf)&&[x.nombre_completo,x.username,x.curso,x.seccion,x.email].join(' ').toLowerCase().includes(q));
+ const data=members.filter(x=>(!hf||x.casa_id===hf)&&[x.nombre_completo,x.username,x.curso,x.seccion,x.email,x.telefono].join(' ').toLowerCase().includes(q));
  $('memberCount').textContent=data.length+' INTEGRANTES';
  $('list').innerHTML=data.length?'<div class="member-grid">'+data.slice((page-1)*size,page*size).map(x=>`<article class="member-card">
  <div class="member-card-top"><div class="member-avatar">${esc((x.nombre_completo||'?').split(' ').map(n=>n[0]).slice(0,2).join(''))}</div><div class="member-identity"><b>${esc(x.nombre_completo)}</b><small>@${esc(x.username||'sin-usuario')}</small></div></div>
- <div class="member-meta"><span><small>CURSO</small><b>${esc(x.curso||'Sin curso')} · ${esc(x.seccion||'')}</b></span><span><small>ESTADO</small><b class="member-status ${x.activo?'active':'inactive'}">${x.activo?'Activo':'Inactivo'}</b></span></div>
+ <div class="member-meta"><span><small>CURSO</small><b>${esc(x.curso||'Sin curso')} · ${esc(x.seccion||'')}</b></span><span><small>TELÉFONO</small><b>${esc(x.telefono||'No indicado')}</b></span><span><small>ESTADO</small><b class="member-status ${x.activo?'active':'inactive'}">${x.activo?'Activo':'Inactivo'}</b></span></div>
  <div class="member-house-box"><small>CASA</small><select class="member-house" onchange="assign('${x.id}',this.value)"><option value="">Sin casa</option>${houses.map(h=>`<option value="${h.id}" ${h.id===x.casa_id?'selected':''}>${esc(h.nombre)}</option>`).join('')}</select></div>
  <div class="member-actions"><button class="action feedback-action" onclick="feedbackMember('${x.id}')">Agregar feedback</button><button class="action" onclick="editMember('${x.id}')">Editar ficha</button></div>
 </article>`).join('')+'</div>':'<div class="empty">No hay integrantes.</div>';
