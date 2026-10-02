@@ -1,3 +1,4 @@
+// Dashboard NOVA: waits for the authenticated Directiva shell before querying private data.
 document.addEventListener('DOMContentLoaded',async()=>{
  await new Promise(resolve=>{if(document.querySelector('#shell .sidebar'))resolve(true);else document.addEventListener('nova-admin-ready',()=>resolve(true),{once:true})});
  const $=id=>document.getElementById(id);
