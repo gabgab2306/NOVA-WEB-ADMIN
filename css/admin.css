@@ -31,3 +31,6 @@ body[data-page="integrantes"] .screen{overflow:hidden}.list-panel{overflow-y:aut
 @media(max-width:1100px){.stats{grid-template-columns:repeat(2,minmax(150px,1fr))}.editor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.area-editor{grid-template-columns:1fr}}
 @media(max-width:700px){.app-main{overflow:hidden}.screen{padding:12px}.stats{grid-template-columns:1fr 1fr}.two-panels{display:grid;grid-template-columns:1fr;min-height:0}.two-panels .panel{min-height:190px}.ranking{min-width:650px}.editor{width:calc(100vw - 20px);max-height:94vh;padding:18px}.editor-head{top:-18px}.editor-grid{grid-template-columns:1fr}.editor-grid .full{grid-column:auto}.editor-section{padding:13px}.area-editor{grid-template-columns:1fr}.area-row{grid-template-columns:1fr;gap:6px}.editor .actions{bottom:-18px}.member-grid{grid-template-columns:1fr}.member-card{min-height:225px}}
 @media(max-width:420px){.stats{grid-template-columns:1fr}.hero-core{display:none}.hero{min-height:110px}.hero h2{font-size:17px}}
+
+/* Member directory: room for course, phone and status metadata */
+.member-card{min-height:285px}.member-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.member-meta span{min-width:0}.member-meta b{overflow-wrap:anywhere;word-break:break-word}
