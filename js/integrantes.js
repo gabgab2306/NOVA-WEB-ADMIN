@@ -14,7 +14,7 @@ function render(){
  <div class="member-card-top"><div class="member-avatar">${esc((x.nombre_completo||'?').split(' ').map(n=>n[0]).slice(0,2).join(''))}</div><div class="member-identity"><b>${esc(x.nombre_completo)}</b><small>@${esc(x.username||'sin-usuario')}</small></div></div>
  <div class="member-meta"><span><small>CURSO</small><b>${esc(x.curso||'Sin curso')} · ${esc(x.seccion||'')}</b></span><span><small>TELÉFONO</small><b>${esc(x.telefono||'No indicado')}</b></span><span><small>ESTADO</small><b class="member-status ${x.activo?'active':'inactive'}">${x.activo?'Activo':'Inactivo'}</b></span></div>
  <div class="member-house-box"><small>CASA</small><select class="member-house" onchange="assign('${x.id}',this.value)"><option value="">Sin casa</option>${houses.map(h=>`<option value="${h.id}" ${h.id===x.casa_id?'selected':''}>${esc(h.nombre)}</option>`).join('')}</select></div>
- <div class="member-actions"><button class="action feedback-action" onclick="feedbackMember('${x.id}')">Agregar feedback</button><button class="action" onclick="editMember('${x.id}')">Editar ficha</button></div>
+ <div class="member-actions"><button class="action feedback-action" onclick="feedbackMember('${x.id}')">Agregar feedback</button><button class="action" onclick="editMember('${x.id}')">Editar ficha completa</button></div>
 </article>`).join('')+'</div>':'<div class="empty">No hay integrantes.</div>';
  const pages=Math.max(1,Math.ceil(data.length/size));$('pager').innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i+1===page?'active':''}" onclick="go(${i+1})">${i+1}</button>`).join('');
 }
@@ -28,7 +28,7 @@ function selectedAreas(){return [...document.querySelectorAll('input[name="area"
 window.editMember=async id=>{
  const base=members.find(x=>x.id===id);if(!base)return;
  const [rAreas,rMun,rDebate,rStaff]=await Promise.all([getAssignment('integrante_areas',id),getAssignment('mun_asignaciones',id),getAssignment('debate_tripletas',id),getAssignment('staff_asignaciones',id)]);
- if(rAreas.error||rMun.error||rDebate.error||rStaff.error)return toast('No se pudo cargar toda la ficha.');
+ if(rAreas.error||rMun.error||rDebate.error||rStaff.error)return toast('Error cargando ficha: '+(rAreas.error||rMun.error||rDebate.error||rStaff.error).message);
  const areas=rAreas.data||[],mun=rMun.data||null,debate=rDebate.data||null,staff=rStaff.data||null;
  $('modal').innerHTML=`<div class="editor">
  <div class="editor-head"><div><span class="eyebrow">FICHA COMPLETA DEL INTEGRANTE</span><h2>${esc(base.nombre_completo)}</h2></div><button class="close" onclick="closeModal()">×</button></div>
