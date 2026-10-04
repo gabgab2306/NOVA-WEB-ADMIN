@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "NOVA · Directiva",
+  "short_name": "NOVA",
+  "description": "Centro privado de gestión de NOVA Leadership Club",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050914",
+  "theme_color": "#050914",
+  "icons": [
+    {
+      "src": "/icons/nova-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
