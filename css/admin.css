@@ -48,3 +48,39 @@ body[data-page="integrantes"] .screen{overflow:hidden}.list-panel{overflow-y:aut
 @media(max-width:1150px){.analytics-grid{grid-template-columns:minmax(0,1fr) minmax(270px,.85fr)}.dashboard-ranking-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-person{grid-template-columns:31px minmax(0,1fr) auto}.dashboard-person time{display:none}.dashboard-person .status{font-size:7px}}
 @media(max-width:850px){.dashboard-hero{min-height:160px}.dashboard-seal{width:78px;height:78px;flex-basis:78px;margin-right:3px}.dashboard-seal span{font-size:29px}.analytics-grid,.dashboard-lower{grid-template-columns:1fr}.analytics-grid>.panel{min-height:250px}.dashboard-ranking-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-person{grid-template-columns:31px minmax(0,1fr) auto auto}.dashboard-person time{display:block}}
 @media(max-width:600px){.dashboard-screen{gap:11px!important;padding:12px!important}.dashboard-top-actions{gap:7px;flex-direction:column;align-items:flex-end}.updated-label{font-size:8px}.dashboard-hero{padding:18px!important;gap:10px;min-height:145px}.dashboard-hero h2{font-size:19px}.dashboard-hero p{max-width:240px}.dashboard-hero:after{right:-110px}.dashboard-seal{width:52px;height:52px;flex-basis:52px;border-radius:50%;margin:0}.dashboard-seal span{font-size:20px}.dashboard-seal i,.dashboard-seal b{width:4px;height:4px}.hero-shortcuts{gap:5px;margin-top:12px}.hero-shortcuts a{padding:7px;font-size:8px}.dashboard-stats{gap:7px!important}.dashboard-stats .stat{min-height:102px;padding:11px}.dashboard-stats .stat>b{font-size:23px}.dashboard-stats .stat>small{font-size:8px}.dashboard-stats .stat>em{font-size:8px}.analytics-grid,.dashboard-lower{gap:10px}.analytics-grid>.panel,.dashboard-lower>.panel,.dashboard-ranking{padding:14px}.analytics-grid .panel h3,.dashboard-lower .panel h3,.dashboard-ranking .panel h3{font-size:15px}.trend-summary{gap:20px;margin-top:12px}.trend-summary b{font-size:20px}.trend-svg{min-width:250px}.house-participation{gap:12px;margin-top:16px}.dashboard-person{grid-template-columns:29px minmax(0,1fr) auto;gap:7px;padding:8px}.person-initial{width:29px;height:29px}.person-copy b{font-size:9px}.person-copy small{font-size:7px}.dashboard-person time{display:none}.dashboard-person .status{padding:4px 5px;font-size:7px}.dashboard-movement-note{flex-wrap:wrap}.dashboard-movement-note a{margin-left:auto}.dashboard-ranking-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.rank-card{padding:11px}.rank-card-name{gap:5px}.rank-card-name h4{font-size:10px}.rank-card-points{font-size:19px}.rank-card-caption{font-size:7px}.dashboard-footer{flex-direction:column;gap:5px}.dashboard-footer span:last-child{text-align:left}.panel-link{padding:7px;font-size:8px}.dashboard-recent,.dashboard-agenda{min-height:0!important}}
+
+/* NOVA Integrantes: keep every member card and its editing actions reachable. */
+body[data-page="integrantes"] .list-panel {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #294765 #07101a;
+}
+body[data-page="integrantes"] .member-grid {
+  align-items: stretch;
+  padding: 12px;
+}
+body[data-page="integrantes"] .member-actions {
+  flex-wrap: wrap;
+  justify-content: stretch;
+  gap: 8px;
+}
+body[data-page="integrantes"] .member-actions .action {
+  flex: 1 1 125px;
+  min-height: 34px;
+  font-size: 10px;
+}
+body[data-page="integrantes"] .member-actions .feedback-action {
+  border-color: #6a5a32;
+}
+body[data-page="integrantes"] .member-actions button:last-child {
+  border-color: #c6a34e88;
+  color: #f0d783;
+  background: linear-gradient(135deg, #172238, #111a27);
+}
+@media(max-width:600px) {
+  body[data-page="integrantes"] .screen { overflow: hidden; }
+  body[data-page="integrantes"] .list-panel { min-height: 0; }
+  body[data-page="integrantes"] .member-grid { grid-template-columns: 1fr; padding: 8px; }
+  body[data-page="integrantes"] .member-card { min-height: 0; }
+}
