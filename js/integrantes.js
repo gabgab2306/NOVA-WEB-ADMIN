@@ -1,5 +1,5 @@
 let members=[],houses=[],page=1;const size=6;
-document.addEventListener('DOMContentLoaded',async()=>{
+document.addEventListener('nova-admin-ready',async()=>{
  const[m,h]=await Promise.all([sb.from('integrantes').select('*').order('nombre_completo'),sb.from('casas').select('*').order('nombre')]);
  if(m.error||h.error)return toast((m.error||h.error).message);
  members=m.data||[];houses=h.data||[];
