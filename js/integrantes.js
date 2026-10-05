@@ -61,20 +61,39 @@ window.editMember=async id=>{
  $('modal').hidden=false;
  $('editForm').onsubmit=async e=>{
    e.preventDefault();
+   const btn=e.submitter;
+   if(btn)btn.disabled=true;
    const patch={nombre_completo:inputValue('eNombre'),username:inputValue('eUser'),curso:inputValue('eCurso'),seccion:inputValue('eSeccion'),telefono:inputValue('eTel'),experiencia:$('eExp').value==='true',detalle_experiencia:inputValue('eDetalle'),motivacion:inputValue('eMot'),intereses:[...document.querySelectorAll('input[name="interes"]:checked')].map(x=>x.value),casa_id:$('eCasa').value||null,activo:$('eAct').value==='true'};
-   const{error}=await sb.from('integrantes').update(patch).eq('id',id);if(error)return toast(error.message);
-   const a=selectedAreas();
-   let op=await sb.from('integrante_areas').delete().eq('integrante_id',id);if(op.error)return toast(op.error.message);
-   if(a.length){op=await sb.from('integrante_areas').insert(a.map(area=>({integrante_id:id,area,detalle:document.querySelector('.area-detail[data-area="'+CSS.escape(area)+'"]')?.value.trim()||null})));if(op.error)return toast(op.error.message)}
-   const munPayload={pais:inputValue('ePais'),comision:inputValue('eComision'),delegacion:inputValue('eDelegacion')};
-   op=await saveOne('mun_asignaciones',id,munPayload);if(op.error)return toast(op.error.message);
-   const debatePayload={nombre_tripleta:inputValue('eTripleta'),companeros:inputValue('eCompaneros')?[inputValue('eCompaneros')].join(',').split(',').map(x=>x.trim()).filter(Boolean):[]};
-   op=await saveOne('debate_tripletas',id,debatePayload);if(op.error)return toast(op.error.message);
-   const staffPayload={rol:inputValue('eRol'),area_staff:inputValue('eAreaStaff')};
-   op=await saveOne('staff_asignaciones',id,staffPayload);if(op.error)return toast(op.error.message);
-   members=members.map(x=>x.id===id?{...x,...patch}:x);closeModal();render();toast('Ficha completa actualizada. ✦');
+   const areas=selectedAreas().map(area=>({area,detalle:document.querySelector('.area-detail[data-area="'+CSS.escape(area)+'"]')?.value.trim()||null}));
+   const mun={pais:inputValue('ePais'),comision:inputValue('eComision'),delegacion:inputValue('eDelegacion')};
+   const debate={nombre_tripleta:inputValue('eTripleta'),companeros:inputValue('eCompaneros')?inputValue('eCompaneros').split(',').map(x=>x.trim()).filter(Boolean):[]};
+   const staff={rol:inputValue('eRol'),area_staff:inputValue('eAreaStaff')};
+   const {error}=await sb.rpc('guardar_ficha_integrante',{
+     p_integrante_id:id,
+     p_nombre_completo:patch.nombre_completo,
+     p_username:patch.username,
+     p_curso:patch.curso,
+     p_seccion:patch.seccion,
+     p_telefono:patch.telefono,
+     p_intereses:patch.intereses,
+     p_experiencia:patch.experiencia,
+     p_detalle_experiencia:patch.detalle_experiencia,
+     p_motivacion:patch.motivacion,
+     p_casa_id:patch.casa_id,
+     p_activo:patch.activo,
+     p_areas:areas,
+     p_mun:mun,
+     p_debate:debate,
+     p_staff:staff
+   });
+   if(error){
+     console.error('NOVA guardar ficha:',error);
+     if(btn)btn.disabled=false;
+     return toast('No se pudo guardar: '+error.message);
+   }
+   members=members.map(x=>x.id===id?{...x,...patch}:x);
+   closeModal();render();toast('Ficha completa guardada. ✦');
  };
-};
 async function saveOne(table,id,payload){
  const clean=Object.fromEntries(Object.entries(payload).filter(([,v])=>v!==null&&v!==''||(Array.isArray(v)&&v.length)));
  const has=Object.values(clean).some(v=>Array.isArray(v)?v.length:v);
