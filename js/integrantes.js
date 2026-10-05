@@ -1,11 +1,28 @@
-let members=[],houses=[],page=1;const size=6;
-document.addEventListener('nova-admin-ready',async()=>{
- const[m,h]=await Promise.all([sb.from('integrantes').select('*').order('nombre_completo'),sb.from('casas').select('*').order('nombre')]);
- if(m.error||h.error)return toast((m.error||h.error).message);
- members=m.data||[];houses=h.data||[];
+let members=[],houses=[],page=1;const size=6;let membersLoaded=false;
+async function loadMembers(){
+ if(membersLoaded)return;
+ membersLoaded=true;
+ const m=await sb.from('integrantes').select('*').order('nombre_completo');
+ if(m.error){
+   membersLoaded=false;
+   $('list').innerHTML='<div class="empty">No se pudieron cargar los integrantes.<br><small>'+esc(m.error.message)+'</small></div>';
+   return;
+ }
+ members=m.data||[];
+ const h=await sb.from('casas').select('*').order('nombre');
+ if(h.error){
+   houses=[];
+   toast('Integrantes cargados. Casas: '+h.error.message);
+ }else{
+   houses=h.data||[];
+ }
  $('houseFilter').innerHTML='<option value="">Todas las Casas</option>'+houses.map(h=>`<option value="${h.id}">${esc(h.nombre)}</option>`).join('');
- $('search').oninput=()=>{page=1;render()};$('houseFilter').onchange=()=>{page=1;render()};render();
-});
+ $('search').oninput=()=>{page=1;render()};$('houseFilter').onchange=()=>{page=1;render()};
+ render();
+}
+document.addEventListener('nova-admin-ready',loadMembers);
+if(document.readyState!=='loading') setTimeout(loadMembers,250);
+else document.addEventListener('DOMContentLoaded',()=>setTimeout(loadMembers,250));
 function render(){
  const q=$('search').value.toLowerCase(),hf=$('houseFilter').value;
  const data=members.filter(x=>(!hf||x.casa_id===hf)&&[x.nombre_completo,x.username,x.curso,x.seccion,x.email,x.telefono].join(' ').toLowerCase().includes(q));
