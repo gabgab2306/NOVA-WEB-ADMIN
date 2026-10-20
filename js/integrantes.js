@@ -2,24 +2,39 @@ let members=[],houses=[],page=1;const size=6;let membersLoaded=false;
 async function loadMembers(){
  if(membersLoaded)return;
  membersLoaded=true;
- const m=await sb.from('integrantes').select('*').order('nombre_completo');
- if(m.error){
+ $('list').innerHTML='<div class="empty">Cargando integrantes de NOVA…</div>';
+ $('memberCount').textContent='CARGANDO…';
+ try{
+   const {data:{session},error:sessionError}=await sb.auth.getSession();
+   if(sessionError)throw new Error('Sesión: '+sessionError.message);
+   if(!session){membersLoaded=false;$('list').innerHTML='<div class="empty">Tu sesión no está activa. Vuelve a iniciar sesión en Directiva.</div>';return;}
+   const {data:allowed,error:accessError}=await sb.rpc('is_directiva');
+   if(accessError)throw new Error('Verificación de Directiva: '+accessError.message);
+   if(allowed!==true)throw new Error('La cuenta inició sesión, pero Supabase no la reconoce como Directiva.');
+   const m=await sb.from('integrantes').select('*').order('nombre_completo');
+   if(m.error)throw new Error('Consulta de integrantes: '+m.error.message);
+   members=m.data||[];
+   const h=await sb.from('casas').select('*').order('nombre');
+   if(h.error){
+     houses=[];
+     console.error('NOVA casas:',h.error);
+     toast('Integrantes cargados, pero no se pudieron cargar las casas.');
+   }else houses=h.data||[];
+   $('houseFilter').innerHTML='<option value="">Todas las Casas</option>'+houses.map(h=>`<option value="${h.id}">${esc(h.nombre)}</option>`).join('');
+   $('search').oninput=()=>{page=1;render()};$('houseFilter').onchange=()=>{page=1;render()};
+   render();
+   if(!members.length){
+     $('list').innerHTML='<div class="empty">La sesión de Directiva está activa, pero Supabase devolvió 0 integrantes. Los registros podrían estar bloqueados por permisos de lectura (RLS).<br><small>Diagnóstico: acceso Directiva confirmado; resultado de integrantes = 0.</small></div>';
+     console.error('NOVA diagnóstico: is_directiva=true, integrantes=0');
+   }
+ }catch(err){
    membersLoaded=false;
-   $('list').innerHTML='<div class="empty">No se pudieron cargar los integrantes.<br><small>'+esc(m.error.message)+'</small></div>';
-   return;
+   console.error('NOVA loadMembers:',err);
+   $('memberCount').textContent='ERROR DE CARGA';
+   $('list').innerHTML='<div class="empty">No se pudieron mostrar los integrantes.<br><small>'+esc(err?.message||String(err))+'</small><br><button class="action" onclick="retryMembers()">Reintentar carga</button></div>';
  }
- members=m.data||[];
- const h=await sb.from('casas').select('*').order('nombre');
- if(h.error){
-   houses=[];
-   toast('Integrantes cargados. Casas: '+h.error.message);
- }else{
-   houses=h.data||[];
- }
- $('houseFilter').innerHTML='<option value="">Todas las Casas</option>'+houses.map(h=>`<option value="${h.id}">${esc(h.nombre)}</option>`).join('');
- $('search').oninput=()=>{page=1;render()};$('houseFilter').onchange=()=>{page=1;render()};
- render();
 }
+window.retryMembers=()=>{membersLoaded=false;loadMembers()};
 document.addEventListener('nova-admin-ready',loadMembers);
 function render(){
  const q=$('search').value.toLowerCase(),hf=$('houseFilter').value;
