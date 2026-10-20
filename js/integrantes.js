@@ -78,7 +78,7 @@ window.editMember=async id=>{
  </div></div>
  <div class="editor-section"><span class="eyebrow">03 · ÁREAS ASIGNADAS</span><div class="area-editor">${['Artística','MUN / ONU','Debate','Oratoria','Staff'].map(a=>{const row=areas.find(x=>x.area===a);return '<div class="area-row"><label class="check"><input type="checkbox" name="area" value="'+a+'" '+(row?'checked':'')+'> '+a+'</label><input class="area-detail" data-area="'+a+'" value="'+esc(row?.detalle||'')+'" placeholder="Detalle / función en esta área"></div>'}).join('')}</div></div></div>
  <div class="editor-section"><span class="eyebrow">04 · MUN / ONU</span><div class="editor-grid">
- <label>País<input id="ePais" value="${esc(mun?.pais||'')}"></label><label>Comisión<input id="eComision" value="${esc(mun?.comision||'')}"></label><label>Delegación<input id="eDelegacion" value="${esc(mun?.delegacion||'')}"></label><label>Co-delegado<input id="eDelegado" value="${esc(mun?.delegado||'')}" placeholder="Nombre de su pareja"></label>
+ <label>País<input id="ePais" value="${esc(mun?.pais||'')}"></label><label>Comisión<input id="eComision" value="${esc(mun?.comision||'')}"></label><label class="full">Delegación<input id="eDelegacion" value="${esc(mun?.delegacion||'')}"></label>
  </div></div>
  <div class="editor-section"><span class="eyebrow">05 · DEBATE</span><div class="editor-grid">
  <label>Nombre de tripleta<input id="eTripleta" value="${esc(debate?.nombre_tripleta||'')}"></label><label>Compañeros<input id="eCompaneros" value="${esc(Array.isArray(debate?.companeros)?debate.companeros.join(', '):'')}"></label>
@@ -95,7 +95,7 @@ window.editMember=async id=>{
    if(btn)btn.disabled=true;
    const patch={nombre_completo:inputValue('eNombre'),username:inputValue('eUser'),curso:inputValue('eCurso'),seccion:inputValue('eSeccion'),telefono:inputValue('eTel'),experiencia:$('eExp').value==='true',detalle_experiencia:inputValue('eDetalle'),motivacion:inputValue('eMot'),intereses:[...document.querySelectorAll('input[name="interes"]:checked')].map(x=>x.value),casa_id:$('eCasa').value||null,activo:$('eAct').value==='true'};
    const areas=selectedAreas().map(area=>({area,detalle:document.querySelector('.area-detail[data-area="'+CSS.escape(area)+'"]')?.value.trim()||null}));
-   const mun={pais:inputValue('ePais'),comision:inputValue('eComision'),delegacion:inputValue('eDelegacion'),delegado:inputValue('eDelegado')};
+   const mun={pais:inputValue('ePais'),comision:inputValue('eComision'),delegacion:inputValue('eDelegacion')};
    const debate={nombre_tripleta:inputValue('eTripleta'),companeros:inputValue('eCompaneros')?inputValue('eCompaneros').split(',').map(x=>x.trim()).filter(Boolean):[]};
    const staff={rol:inputValue('eRol'),area_staff:inputValue('eAreaStaff')};
    const {error}=await sb.rpc('guardar_ficha_integrante',{
