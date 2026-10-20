@@ -57,7 +57,7 @@ function selectedAreas(){return [...document.querySelectorAll('input[name="area"
 
 window.editMember=async id=>{
  const base=members.find(x=>x.id===id);if(!base)return;
- const [rAreas,rMun,rDebate,rStaff]=await Promise.all([getAssignment('integrante_areas',id),getAssignment('mun_asignaciones',id),getAssignment('debate_tripletas',id),getAssignment('staff_asignaciones',id)]);
+ const [rAreas,rMun,rDebate,rStaff]=await Promise.all([sb.from('integrante_areas').select('*').eq('integrante_id',id),getAssignment('mun_asignaciones',id),getAssignment('debate_tripletas',id),getAssignment('staff_asignaciones',id)]);
  if(rAreas.error||rMun.error||rDebate.error||rStaff.error)return toast('Error cargando ficha: '+(rAreas.error||rMun.error||rDebate.error||rStaff.error).message);
  const areas=rAreas.data||[],mun=rMun.data||null,debate=rDebate.data||null,staff=rStaff.data||null;
  $('modal').innerHTML=`<div class="editor">
