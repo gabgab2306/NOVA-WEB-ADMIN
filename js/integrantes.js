@@ -21,8 +21,6 @@ async function loadMembers(){
  render();
 }
 document.addEventListener('nova-admin-ready',loadMembers);
-if(document.readyState!=='loading') setTimeout(loadMembers,250);
-else document.addEventListener('DOMContentLoaded',()=>setTimeout(loadMembers,250));
 function render(){
  const q=$('search').value.toLowerCase(),hf=$('houseFilter').value;
  const data=members.filter(x=>(!hf||x.casa_id===hf)&&[x.nombre_completo,x.username,x.curso,x.seccion,x.email,x.telefono].join(' ').toLowerCase().includes(q));
