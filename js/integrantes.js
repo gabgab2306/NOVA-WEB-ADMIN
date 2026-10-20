@@ -124,6 +124,7 @@ window.editMember=async id=>{
    members=members.map(x=>x.id===id?{...x,...patch}:x);
    closeModal();render();toast('Ficha completa guardada. ✦');
  };
+};
 async function saveOne(table,id,payload){
  const clean=Object.fromEntries(Object.entries(payload).filter(([,v])=>v!==null&&v!==''||(Array.isArray(v)&&v.length)));
  const has=Object.values(clean).some(v=>Array.isArray(v)?v.length:v);
